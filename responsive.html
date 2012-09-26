@@ -9,6 +9,7 @@
 		#url input[type=submit]{display:none;}
 		#widthHandle {float:left;background:#999;height:1001px;width:25px}
 		iframe{overflow-x:scroll;margin-bottom:10px;padding-bottom:20px;float:left;}
+		#iframeHolder{width:100%;}
 	</style>
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript">
@@ -17,6 +18,25 @@
 	var url = "http://nu.nurelm.com";
 	//UserAgent String for Testing
 	var IPHONE ="Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5";
+	
+	$(document).ready(function(){
+		(function($){
+		    $.fn.disableSelection = function() {
+	        	return this
+	                 .attr('unselectable', 'on')
+	                 .css('user-select', 'none')
+	                 .on('selectstart', false);
+	    	};
+		})(jQuery);
+		(function($){
+		    $.fn.enableSelection = function() {
+		        return this
+		                 .attr('unselectable', 'off')
+		                 .css('user-select', 'text')
+		                 .on('selectstart', null);
+		    };
+		})(jQuery);
+	});
 	
 	//Little regex to grab parameters of the request url for testing
 	function getParameterByName(name){
@@ -59,6 +79,7 @@
 	}
 		$(document).ready(function(){
 			
+			
 			//Little Buddy that allows you to add any custom size from the input field
 			$("#customSize").keyup(function(){
 				var val = parseInt($(this).val());
@@ -72,23 +93,26 @@
 			});
 			
 			//Control Handle to adjust width
-			$("#widthHandle").mousedown(function(e){
-				$(this).mousemove(function(e2){
-					var right = $(this).offset().left + $(this).width();
-					var doclimit = document.width - $(this).width();
+			$("#widthHandle").unbind("mousedown").mousedown(function(e){
+				var right = $("#widthHandle").offset().left + $("#widthHandle").width();
+				var doclimit = document.width - $("#widthHandle").width()- 20;
+				$(document).disableSelection(); //Keeps you from accidentally selecting while dragging
+				$(document).unbind("mousemove").mousemove(function(e2){
+					console.log($("#widthHandle").offset().left +" : "+ doclimit);
 					if(right < doclimit){
-						$(this).offset({left: e2.pageX - $(this).width()/2 });
+						$("#widthHandle").offset({left: e2.pageX - $("#widthHandle").width()/2 });
 						$('#frame1').stop();
-						$('#frame1').width($(this).offset().left+"px");
+						$('#frame1').width($("#widthHandle").offset().left+"px");
 						$('#customSizeValue').text($('#frame1').width().toFixed(0));
 					}else{
-						$(this).offset({left: document.width - ($(this).width()*2)-1});
-						$(this).unbind("mousemove");  // unbind events from widthHandle
+						$("#widthHandle").offset({left: doclimit - $("#widthHandle").width()});
+						$('#frame1').width($("#widthHandle").offset().left+"px");
 					}
-				});
-				$(this).mouseup(function(e3) {
-					$(this).unbind("mousemove");  // unbind events from widthHandle
-					console.log("outer");
+				}).one();
+				$(document).unbind("mouseup").mouseup(function(e3) {
+					$(document).enableSelection(); //Select away
+					$(document).unbind("mousemove");  // unbind events from widthHandle
+					$(this).unbind("mouseup");
 				}).one();
 			});
 			
@@ -176,8 +200,8 @@
 		</ul>
 	</div>
 	<!-- the mighty iframe in sandbox mode -->
-	<div>
-		<iframe id="frame1" sandbox="allow-same-origin allow-forms allow-scripts" width="1039" height="1000"></iframe>
+	<div id="iframeHolder" class="iframeHolder">
+		<iframe class ="iframeHolder" id="frame1" sandbox="allow-same-origin allow-forms allow-scripts" width="1039" height="1000"></iframe>
 		<div id="widthHandle"></div>
 	</div>
 </body>
