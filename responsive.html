@@ -94,19 +94,19 @@
 			
 			//Control Handle to adjust width
 			$("#widthHandle").unbind("mousedown").mousedown(function(e){
-				var right = $("#widthHandle").offset().left + $("#widthHandle").width();
-				var doclimit = document.width - $("#widthHandle").width()- 20;
+				var doclimit = document.width - $("#widthHandle").width();
 				$(document).disableSelection(); //Keeps you from accidentally selecting while dragging
 				$(document).unbind("mousemove").mousemove(function(e2){
-					console.log($("#widthHandle").offset().left +" : "+ doclimit);
-					if(right < doclimit){
-						$("#widthHandle").offset({left: e2.pageX - $("#widthHandle").width()/2 });
+					var right = $("#widthHandle").offset().left + $("#widthHandle").width();
+					if(e2.pageX < doclimit){
+						$("#widthHandle").offset({left: e2.pageX - $("#widthHandle").width()});
 						$('#frame1').stop();
 						$('#frame1').width($("#widthHandle").offset().left+"px");
 						$('#customSizeValue').text($('#frame1').width().toFixed(0));
 					}else{
-						$("#widthHandle").offset({left: doclimit - $("#widthHandle").width()});
-						$('#frame1').width($("#widthHandle").offset().left+"px");
+						$("#widthHandle").offset({left: $("#widthHandle").offset().left});
+						//$("#widthHandle").offset({left: right - ($("#widthHandle").width()+1)});
+						//$('#frame1').width($("#widthHandle").offset().left+"px");
 					}
 				}).one();
 				$(document).unbind("mouseup").mouseup(function(e3) {
