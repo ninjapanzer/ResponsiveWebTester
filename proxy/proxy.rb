@@ -16,6 +16,10 @@ class Proxy
   def fetch (obj)
     agent = Mechanize.new
     agent.user_agent = obj[:headers]["HTTP_USER_AGENT"]
+    obj[:headers].delete_if do |key, value|
+      key == "HTTP_USER_AGENT"
+    end
+    agent.request_headers = obj[:headers]
     resp = agent.get obj[:uri]
     resp.body
   end
