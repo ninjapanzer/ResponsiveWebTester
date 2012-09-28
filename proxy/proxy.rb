@@ -16,13 +16,40 @@ class Proxy
     :headers=> Hash of headers to be injected into the request
 =end  
   def fetch (obj)
+    resp = mechanize obj
+  end
+
+  def proxy_it (obj)
+    resp = mechanize obj
+    determined_resp = force_determinism resp.content
+    determined_resp.to_html
+  end
+
+  def mechanize (obj)
     agent = Mechanize.new
     agent.user_agent = obj[:headers]["HTTP_USER_AGENT"]
     obj[:headers].delete_if do |key, value|
       key == "HTTP_USER_AGENT"
     end
     agent.request_headers = obj[:headers]
-    resp = agent.get obj[:uri]
-    resp.body
+    @mech = resp = agent.get obj[:uri]
+    #girit resp.content
   end
+=begin
+  Silly Circular logic for testing at the moment
+=end
+  def girit (html)
+    @giri = Nokogiri.parse(html)
+    @giri.to_html
+  end
+
+private
+
+  def force_determinism
+    determined_giri = @giri.clone
+    determined_giri.search("a").each do |link|
+      puts link["href"]
+    end
+  end
+
 end

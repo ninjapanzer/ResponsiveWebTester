@@ -4,6 +4,7 @@ RSpec.configure do |config|
     @proxy = Proxy.new
     @uri = URI.parse('http://google.com')
     @headers = {"HTTP_USER_AGENT"=>"Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5"}
+    @passin = {:uri=>@uri, :headers=>@headers}
   end
 end
 
@@ -24,13 +25,22 @@ describe "#new" do
 end
 
 describe "#fetch" do
-    it "Should have a URI and some Headers" do
-      @uri.should be_instance_of URI::HTTP
-      @uri.to_s.should be_instance_of String
-      @headers.size > 0
-    end
-    it "Should create an HTTP Object that requests the URI and attaches the Headers" do
-      passin = {:uri=>@uri, :headers=>@headers}
-      @proxy.fetch(passin).should be_instance_of String
-    end
+  it "Should have a URI and some Headers" do
+    @uri.should be_instance_of URI::HTTP
+    @uri.to_s.should be_instance_of String
+    @headers.size > 0
+  end
+  it "Should create an Mechanize::Page Object that requests the URI and attaches the Headers" do
+    passin = {:uri=>@uri, :headers=>@headers}
+    @proxy.fetch(passin).should be_instance_of Mechanize::Page
+  end
+end
+
+describe "#mechanize" do
+  it "Should Take URI and Headers and make the page request returning Mechanize::page Object" do
+    @proxy.mechanize(@passin).should be_instance_of Mechanize::Page
+  end
+  it "Should set the @mech class instance variable" do
+    assigns(:mech).should be_instance_of Mechanize::Page
+  end
 end
