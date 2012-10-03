@@ -4,6 +4,7 @@ require 'uri'
 
 class Proxy
   attr_accessor :agents
+  attr_reader :mech, :giri
   def initialize()
     @agents = {
       "iphone4"=>"Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5",
@@ -21,7 +22,8 @@ class Proxy
 
   def proxy_it (obj)
     resp = mechanize obj
-    determined_resp = force_determinism resp.content
+    undetermined_resp = girit resp.content
+    determined_resp = force_determinism 
     determined_resp.to_html
   end
 
@@ -48,8 +50,13 @@ private
   def force_determinism
     determined_giri = @giri.clone
     determined_giri.search("a").each do |link|
-      puts link["href"]
+      if link ["href"] != nil &&  !link["href"].include?("http")
+        puts link["href"]
+        link["href"] = @mech.uri.scheme.to_s + "\://" + @mech.uri.host.to_s + link["href"]
+        puts link["href"]
+      end
     end
+    determined_giri
   end
 
 end
