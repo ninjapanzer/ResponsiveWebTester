@@ -24,7 +24,7 @@ class Proxy
     resp = mechanize obj
     undetermined_resp = girit resp.content
     determined_resp = force_determinism 
-    determined_resp.to_html
+    resp = determined_resp.to_html
   end
 
   def mechanize (obj)
@@ -50,10 +50,11 @@ private
   def force_determinism
     determined_giri = @giri.clone
     determined_giri.search("a").each do |link|
-      if link ["href"] != nil &&  !link["href"].include?("http")
-        puts link["href"]
+      if link ["href"] != nil &&  !link["href"].include?("http") && link["href"].scan(/\([a-zA-Z]*[\d+]*[a-zA-Z]*\)/).size <= 0
+        #puts link["href"]
+        link["href"] = link["href"][0] == "/" ? link["href"] : "/" + link["href"]
         link["href"] = @mech.uri.scheme.to_s + "\://" + @mech.uri.host.to_s + link["href"]
-        puts link["href"]
+        #puts link["href"]
       end
     end
     determined_giri
