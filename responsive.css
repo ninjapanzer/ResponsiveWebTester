@@ -1,0 +1,14 @@
+#url{margin:0 0 20px 0px;display:block; background-color: rgba(255,255,255,0.8); border-radius: 5px;}
+#url input[type=text]{border:solid 1px #666;width:85%;margin:0 auto;font-size:2em;text-align:left; border-radius: 10px; border-color: white;}
+#url input[type=submit]{display:none;}
+#controlfs{width:250px; float:left; border-radius: 30px;}
+#controlfs input[type=text]{border-radius: 10px;}
+#controlbar{height:110px; background-color: rgba(255,255,255,0.8); border-radius: 30px;}
+#links{width:250px; float:right; padding:10px;}
+#links fieldset{padding:0px; margin:0px; border-radius: 30px;}
+#links fieldset legend{text-align: center;}
+#links ul{list-style: none; padding: 10px; margin: 0; text-align: right;}
+#widthHandle {float:left;background:#999;height:1001px;width:25px}
+iframe{overflow-x:scroll;margin-bottom:10px;padding-bottom:20px;float:left;}
+#iframeHolder{width:100%;}
+body{background: url(responsebg.png) no-repeat;}

@@ -1,0 +1,53 @@
+<html>
+<!-- Author: Paul Scarrone 6-27-2012 -->
+<!-- Last Update 7-3-2012 -->
+<!-- Loosely derived from Matt Kersley https://github.com/mattkersley/Responsive-Design-Testing -->
+<head>
+	<link type="text/css" href="responsive.css" rel="stylesheet"/>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="responsive.js"></script>
+</head>
+<body>
+	<div id="url">
+		<form id="urlform" method="post">
+			<input type="text" placeholder="Enter URL..." /> &nbsp;By Paul Scarrone
+			<input type="submit" value="submit">
+		</form>
+	</div>
+	<div id="controlbar">
+		<fieldset id="controlfs">
+			<legend>Controls</legend>
+			<label for="forcereload">Force Reload</label>
+			<!-- I really don't know if this is useful Reloads the page during the animation -->
+			<input id="forcereload" type="checkbox" value="ForceReload"/><br/>
+			<div id="sizeButtons"> <!-- Add an anchor like the samples below and they will set the iframe according the numerical value of the id -->
+			  <a href="#" id="255">240</a>
+			  <a href="#" id="335">320</a>
+			  <a href="#" id="495">480</a>
+			  <a href="#" id="783">768</a>
+			  <a href="#" id="1039">1024</a>
+			</div>
+			<div>
+			  <input id="customSize" type="text" size="25" placeholder="Enter Custom Width 0&rarr;&infin;"/>&nbsp;&nbsp;Width: <span id="customSizeValue"></span>
+			  <!--<a href="?mode=iphone" id="iphone">iphone</a>-->
+			</div>
+		</fieldset>
+		<div id ="links"> <!-- Add an anchor like the samples and they will load in the iframe based upon the href -->
+			<fieldset>
+				<legend>Some Other Responsive Sites</legend>
+				<ul>
+					<li><a href="http://www.fork-cms.com/">Fork CMS</a></li>
+					<li><a href="http://webdesignerwall.com/">Web Designer Wall</a></li>
+					<li><a href="http://nurelm.com/">NuRelm E-Commerce Solutions</a></li>
+				</ul>
+			</fieldset>
+		</div>
+	</div>
+	<!-- the mighty iframe in sandbox mode -->
+	Drag the grey bar at the right of the frame to manually adjust the width.
+	<div id="iframeHolder" class="iframeHolder">
+		<iframe class ="iframeHolder" id="frame1" sandbox="allow-same-origin allow-forms allow-scripts" width="1039" height="1000"></iframe>
+		<div id="widthHandle"></div>
+	</div>
+</body>
+</html>
